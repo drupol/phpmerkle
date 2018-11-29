@@ -118,7 +118,7 @@
 </span><span class="l" id="line-50">            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \RuntimeException(<span class="php-quote">'The array is empty - unable to get a hash.'</span>);
 </span><span class="l" id="line-51">        }
 </span><span class="l" id="line-52">
-</span><span class="l" id="line-53">        <span class="php-var">$this</span>-&gt;<span class="php-keyword2">hash</span> = <span class="php-keyword2">current</span>(<span class="php-keyword2">array_reduce</span>(
+</span><span class="l" id="line-53">        <span class="php-var">$this</span>-&gt;<span class="php-keyword2">hash</span> = \<span class="php-keyword2">current</span>(\<span class="php-keyword2">array_reduce</span>(
 </span><span class="l" id="line-54">            <span class="php-var">$this</span>-&gt;storage,
 </span><span class="l" id="line-55">            <span class="php-keyword1">function</span> (<span class="php-var">$carry</span>) {
 </span><span class="l" id="line-56">                <span class="php-keyword1">if</span> (<span class="php-num">1</span> === \<span class="php-keyword2">count</span>(<span class="php-var">$carry</span>) % <span class="php-num">2</span>) {
@@ -126,9 +126,9 @@
 </span><span class="l" id="line-58">                    <span class="php-keyword1">return</span> <span class="php-var">$carry</span>;
 </span><span class="l" id="line-59">                }
 </span><span class="l" id="line-60">
-</span><span class="l" id="line-61">                <span class="php-keyword1">return</span> <span class="php-keyword2">array_map</span>([<span class="php-var">$this</span>, <span class="php-quote">'doPairHash'</span>], <span class="php-keyword2">array_chunk</span>(<span class="php-var">$carry</span>, <span class="php-num">2</span>));
+</span><span class="l" id="line-61">                <span class="php-keyword1">return</span> \<span class="php-keyword2">array_map</span>([<span class="php-var">$this</span>, <span class="php-quote">'doPairHash'</span>], \<span class="php-keyword2">array_chunk</span>(<span class="php-var">$carry</span>, <span class="php-num">2</span>));
 </span><span class="l" id="line-62">            },
-</span><span class="l" id="line-63">            <span class="php-keyword2">array_map</span>([<span class="php-var">$this</span>-&gt;hasher, <span class="php-quote">'hash'</span>], <span class="php-var">$this</span>-&gt;storage)
+</span><span class="l" id="line-63">            \<span class="php-keyword2">array_map</span>([<span class="php-var">$this</span>-&gt;hasher, <span class="php-quote">'hash'</span>], <span class="php-var">$this</span>-&gt;storage)
 </span><span class="l" id="line-64">        ));
 </span><span class="l" id="line-65">
 </span><span class="l" id="line-66">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;<span class="php-keyword2">hash</span>;
