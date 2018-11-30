@@ -42,6 +42,34 @@ class Merkle implements MerkleInterface
     /**
      * {@inheritdoc}
      */
+    public function depth(): int
+    {
+        return (int) \floor(\log($this->count(), 2)) + 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function level(int $level): array
+    {
+        $levels = $this->depth();
+
+        if ($level > $levels) {
+            throw new \InvalidArgumentException('Invalid level.');
+        }
+
+        $storage = \array_map([$this->hasher, 'hash'], $this->storage);
+
+        for ($i = $levels-1; $i >= $level; $i--) {
+            $storage = $this->reduceArrayToHash($storage);
+        }
+
+        return $storage;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function hash(): string
     {
         if (null !== $this->hash) {
@@ -54,19 +82,7 @@ class Merkle implements MerkleInterface
 
         $this->hash = \current(\array_reduce(
             $this->storage,
-            function ($carry) {
-                if (1 === \count($carry) % 2) {
-                    $carry[] = \end($carry);
-                    return $carry;
-                }
-
-                return \array_map(
-                    function ($pair) {
-                        return $this->hasher->hash($pair[0].$pair[1]);
-                    },
-                    \array_chunk($carry, 2)
-                );
-            },
+            [$this, 'reduceArrayToHash'],
             \array_map([$this->hasher, 'hash'], $this->storage)
         ));
 
@@ -126,5 +142,34 @@ class Merkle implements MerkleInterface
     public function count()
     {
         return \count($this->storage);
+    }
+
+    /**
+     * Reduce an array by transforming pair of values into a single hash.
+     *
+     * @param array $data
+     *   The data array.
+     *
+     * @return array
+     *   The hashes array.
+     */
+    private function reduceArrayToHash(array $data): array
+    {
+        $count = \count($data);
+
+        if (1 === $count) {
+            return $data;
+        }
+
+        if (1 ===  $count % 2) {
+            $data[] = \end($data);
+        }
+
+        return \array_map(
+            function ($chunk) {
+                return $this->hasher->hash($chunk[0] . $chunk[1]);
+            },
+            \array_chunk($data, 2)
+        );
     }
 }

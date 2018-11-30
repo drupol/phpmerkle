@@ -1,8 +1,8 @@
 {
     "name": "drupol/phpmerkle",
     "type": "library",
-    "description": "Merkle tree implementation",
-    "keywords": ["merkle tree", "php", "merkle", "tree"],
+    "description": "A fast Merkle tree implementation",
+    "keywords": ["merkle tree", "php", "merkle", "tree", "cryptography", "blockain"],
     "license": "MIT",
     "prefer-stable": true,
     "minimum-stability": "dev",
@@ -27,10 +27,13 @@
         "maglnet/composer-require-checker": "^1.1",
         "monolog/monolog": "^1.0",
         "php-http/guzzle6-adapter": "^1.1",
+        "phpbench/phpbench": "dev-master",
         "phpmd/phpmd": "^2.6",
         "phpro/grumphp": "^0.14.0",
         "phpspec/phpspec": "^4",
         "phpstan/phpstan": "^0.10",
+        "pitsolu/merkle-tree": "dev-master",
+        "pleonasm/merkle-tree": "^1.0",
         "roave/better-reflection": "dev-master",
         "roave/security-advisories": "dev-master",
         "scrutinizer/ocular": "^1.3",
@@ -45,7 +48,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "drupol\\phpmerkle\\tests\\": "spec/src/"
+            "drupol\\phpmerkle\\tests\\": "spec/src/",
+            "drupol\\phpmerkle\\benchmarks\\": "benchmarks/"
         }
     },
     "config": {
@@ -59,6 +63,6 @@
         "phpcbf": "./vendor/bin/phpcbf --ignore=vendor .",
         "infection": "./vendor/bin/infection run -j 10",
         "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml",
-        "bench": "./vendor/bin/phpbench run --report=project --store --precision=3"
+        "bench": "./vendor/bin/phpbench run --report=aggregate --store --precision=3"
     }
 }

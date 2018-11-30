@@ -10,7 +10,7 @@
 
 ## Description
 
-PHP implementation of a [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree).
+A fast PHP implementation of the [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree) using simple arrays.
 
 ## Documentation
 
@@ -40,13 +40,18 @@ $merkle['key'] = 'value';
 
 $merkle['key']; // this returns: 'value';
 ```
-## Code quality and tests
+## Code quality, tests and benchmarks
 
-Every time changes are introduced into the library, [Travis CI](https://travis-ci.org/drupol/phpmerkle/builds) run the tests.
+Every time changes are introduced into the library, [Travis CI](https://travis-ci.org/drupol/htmltag/builds) run the tests and the benchmarks.
 
 The library has tests written with [PHPSpec](http://www.phpspec.net/).
-
 Feel free to check them out in the `spec` directory. Run `composer phpspec` to trigger the tests.
+
+Before each commit some inspections are executed with [GrumPHP](https://github.com/phpro/grumphp), run `./vendor/bin/grumphp run` to check manually.
+
+[PHPBench](https://github.com/phpbench/phpbench) is used to benchmark the library, to run the benchmarks: `composer bench`
+
+[PHPInfection](https://github.com/infection/infection) is used to ensure that your code is properly tested, run `composer infection` to test your code.
 
 ## Contributing
 

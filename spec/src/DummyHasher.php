@@ -13,6 +13,6 @@ class DummyHasher implements HasherInterface
      */
     public function hash(string $data): string
     {
-        return 'dummy';
+        return $data;
     }
 }

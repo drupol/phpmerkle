@@ -11,7 +11,21 @@ class MerkleSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith([]);
+        $this->beConstructedWith([], new DummyHasher());
+
+        $this->shouldThrow(\Exception::class)->during('hash');
+
+        $data = [
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+        ];
+
+        foreach ($data as $key => $value) {
+            $this[$key] = $value;
+        }
     }
 
     public function it_is_initializable()
@@ -21,39 +35,14 @@ class MerkleSpec extends ObjectBehavior
 
     public function it_can_hash()
     {
-        $data = [
-            'hello',
-            'world',
-            'foo',
-            'bar',
-            'w00t',
-        ];
-
-        $this->beConstructedWith($data);
-
-        $this->hash()->shouldReturn('b556d5b958793e016e7d77b9d1f0526130a8dad34ebf317988bde0cd2fc0c789');
+        $this->hash()->shouldReturn('ABCDEEEE');
     }
 
     public function it_can_be_used_like_an_array()
     {
-        $data = [
-            'hello',
-            'world',
-            'foo',
-            'bar',
-            'w00t',
-        ];
+        $this[] = 'F';
 
-        foreach ($data as $key => $item) {
-            $this[] = $item;
-        }
-
-        $this->hash()->shouldReturn('b556d5b958793e016e7d77b9d1f0526130a8dad34ebf317988bde0cd2fc0c789');
-    }
-
-    public function it_throw_an_error_when_trying_to_get_the_hash_of_empty_array()
-    {
-        $this->shouldThrow(\RuntimeException::class)->during('hash');
+        $this->hash()->shouldReturn('ABCDEFEF');
     }
 
     public function it_can_return_an_iterator()
@@ -63,55 +52,39 @@ class MerkleSpec extends ObjectBehavior
 
     public function it_can_cache_a_hash()
     {
-        $data = [
-            'hello',
-            'world',
-            'foo',
-            'bar',
-            'w00t',
-        ];
-
-        foreach ($data as $key => $item) {
-            $this[] = $item;
-        }
-
-        $this->hash()->shouldReturn('b556d5b958793e016e7d77b9d1f0526130a8dad34ebf317988bde0cd2fc0c789');
-        $this->hash()->shouldReturn('b556d5b958793e016e7d77b9d1f0526130a8dad34ebf317988bde0cd2fc0c789');
+        $this->hash()->shouldReturn('ABCDEEEE');
+        $this->hash()->shouldReturn('ABCDEEEE');
     }
 
     public function it_extends_arrayaccess()
     {
-        $data = [
-            'hello',
-            'world',
-            'foo',
-            'bar',
-            'w00t',
-        ];
-
-        $this->beConstructedWith($data);
-
         $this->offsetExists(0)->shouldReturn(true);
         $this->offsetExists(5)->shouldReturn(false);
-        $this[0]->shouldReturn('hello');
-        $this[6] = 'merkle';
+        $this[0]->shouldReturn('A');
+        $this[6] = 'F';
         unset($this[6]);
 
-        $this->hash()->shouldReturn('b556d5b958793e016e7d77b9d1f0526130a8dad34ebf317988bde0cd2fc0c789');
+        $this->hash()->shouldReturn('ABCDEEEE');
     }
 
-    public function it_can_use_another_hasher()
+    public function it_can_get_the_tree_depth()
     {
-        $data = [
-            'hello',
-            'world',
-            'foo',
-            'bar',
-            'w00t',
-        ];
+        $this->depth()->shouldReturn(3);
+        $this[] = 'F';
+        $this->depth()->shouldReturn(3);
+        $this[] = 'G';
+        $this->depth()->shouldReturn(3);
+        $this[] = 'H';
+        $this->depth()->shouldReturn(4);
+    }
 
-        $this->beConstructedWith($data, new DummyHasher());
+    public function it_can_get_levels()
+    {
+        $this->level(0)->shouldReturn(['ABCDEEEE']);
+        $this->level(1)->shouldReturn(['ABCD', 'EEEE']);
+        $this->level(2)->shouldReturn(['AB', 'CD', 'EE']);
+        $this->level(3)->shouldReturn(['A', 'B', 'C', 'D', 'E']);
 
-        $this->hash()->shouldReturn('dummy');
+        $this->shouldThrow(\InvalidArgumentException::class)->during('level', [4]);
     }
 }

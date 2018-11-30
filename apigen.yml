@@ -1,6 +1,6 @@
 parameters:
     visibility_levels: [public, protected, private]
     annotation_groups: [todo, deprecated]
-    title: "PHP Blockchain API documentation"
-    base_url: "https://not-a-number.io/phpblockchain"
+    title: "PhpMerkle API documentation"
+    base_url: "https://not-a-number.io/phpmerkle"
     overwrite: false
