@@ -10,20 +10,24 @@ use Pleo\Merkle\FixedSizeTree;
  */
 class PleonasmMerkleTreeBench extends AbstractBench
 {
+    /**
+     * @var FixedSizeTree
+     */
+    private $tree;
+
+    /**
+     * @var callable
+     */
+    private $hasher;
+
+    /**
+     * Init the object.
+     */
     public function initObject()
     {
-        $data = $this->getData();
-
-        // basically the same thing bitcoin merkle tree hashing does
-        $hasher = function ($data) {
-            return hash('sha256', hash('sha256', $data));
+        $this->hasher = function ($data) {
+            return \hash('sha256', \hash('sha256', $data));
         };
-
-        $this->tree = new FixedSizeTree(count($data), $hasher);
-
-        foreach ($data as $key => $value) {
-            $data[$key] = $value;
-        }
     }
 
     /**
@@ -33,6 +37,13 @@ class PleonasmMerkleTreeBench extends AbstractBench
      */
     public function benchHash()
     {
+        $data = $this->getData();
+        $this->tree = new FixedSizeTree(\count($data), $this->hasher);
+
+        foreach ($data as $key => $value) {
+            $this->tree->set($key, $value);
+        }
+
         $this->tree->hash();
     }
 }

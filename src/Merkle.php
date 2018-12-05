@@ -13,78 +13,65 @@ use drupol\phpmerkle\Hasher\HasherInterface;
 class Merkle implements MerkleInterface
 {
     /**
-     * @var string[]
-     */
-    private $storage;
-
-    /**
-     * @var string|null
-     */
-    private $hash;
-
-    /**
-     * @var HasherInterface
+     * The hasher.
+     *
+     * @var \drupol\phpmerkle\Hasher\HasherInterface
      */
     private $hasher;
 
     /**
+     * The node's hash.
+     *
+     * @var string|null
+     */
+    public $hash;
+
+    /**
+     * @var mixed[]
+     */
+    protected $items;
+
+    /**
+     * @var int
+     */
+    public $capacity;
+
+    /**
      * Merkle constructor.
      *
-     * @param array $data
-     * @param HasherInterface|null $hasher
+     * @param int $capacity
+     * @param \drupol\phpmerkle\Hasher\HasherInterface $hasher
      */
-    public function __construct(array $data = [], HasherInterface $hasher = null)
-    {
-        $this->storage = $data;
+    public function __construct(
+        int $capacity = 2,
+        HasherInterface $hasher = null
+    ) {
         $this->hasher = $hasher ?? new DoubleSha256();
+        $this->capacity = $capacity;
     }
 
     /**
-     * {@inheritdoc}
+     * Hash a tree.
+     *
+     * @return string|null
+     *   Return a hash or null.
      */
-    public function depth(): int
+    public function hash(): ?string
     {
-        return (int) \floor(\log($this->count(), 2)) + 1;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function level(int $level): array
-    {
-        $levels = $this->depth();
-
-        if ($level > $levels) {
-            throw new \InvalidArgumentException('Invalid level.');
-        }
-
-        $storage = \array_map([$this->hasher, 'hash'], $this->storage);
-
-        for ($i = $levels-1; $i >= $level; $i--) {
-            $storage = $this->reduceArrayToHash($storage);
-        }
-
-        return $storage;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hash(): string
-    {
-        if (null !== $this->hash) {
+        if (isset($this->hash)) {
             return $this->hash;
         }
 
-        if (0 === $this->count()) {
-            throw new \RuntimeException('The array is empty - unable to get a hash.');
+        $items = $this->items;
+
+        while (\count($items) > 1) {
+            $items = \array_map(
+                [$this, 'reducePairOfStrings'],
+                \array_chunk($items, $this->capacity)
+            );
         }
 
-        $this->hash = \current(\array_reduce(
-            $this->storage,
-            [$this, 'reduceArrayToHash'],
-            \array_map([$this->hasher, 'hash'], $this->storage)
-        ));
+        $this->hash = \current($items);
 
         return $this->hash;
     }
@@ -92,84 +79,55 @@ class Merkle implements MerkleInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function set($key, $value)
     {
-        return new \ArrayIterator($this->storage);
-    }
+        $this->items[$key] = $value;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetExists($offset)
-    {
-        return isset($this->storage[$offset]);
-    }
+        $size = (int) \max([\max(\array_keys($this->items)), \count($this->items)]);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetGet($offset)
-    {
-        return $this->storage[$offset];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetSet($offset, $value)
-    {
-        if (null !== $offset) {
-            $this->storage[$offset] = $value;
-        } else {
-            $this->storage[] = $value;
+        for ($i = 0; $i < $size; $i++) {
+            $this->items += [
+                $i => null,
+            ];
         }
+
+        \ksort($this->items);
 
         $this->hash = null;
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function getHasher(): HasherInterface
     {
-        unset($this->storage[$offset]);
-        $this->hash = null;
+        return $this->hasher;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function count()
-    {
-        return \count($this->storage);
-    }
-
-    /**
-     * Reduce an array by transforming pair of values into a single hash.
+     * Reduce a pair of string into one.
      *
-     * @param array $data
-     *   The data array.
+     * @param string[] $chunk
+     *   The chunk.
      *
-     * @return array
-     *   The hashes array.
+     * @return string|null
      */
-    private function reduceArrayToHash(array $data): array
+    private function reducePairOfStrings(array $chunk): ?string
     {
-        $count = \count($data);
+        $filtered = \array_filter($chunk);
 
-        if (1 === $count) {
-            return $data;
+        if ([] === $filtered) {
+            return null;
         }
 
-        if (1 ===  $count % 2) {
-            $data[] = \end($data);
+        $filler = \current($filtered);
+
+        for ($i = 0; $i < $this->capacity; $i++) {
+            $chunk[$i] = $chunk[$i] ?? $filler;
         }
 
-        return \array_map(
-            function ($chunk) {
-                return $this->hasher->hash($chunk[0] . $chunk[1]);
-            },
-            \array_chunk($data, 2)
-        );
+        return $this->getHasher()->hash(\implode('', $chunk));
     }
 }

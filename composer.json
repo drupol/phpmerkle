@@ -20,7 +20,9 @@
     "require-dev":{
         "apigen/apigen": "dev-master",
         "drupol/phpspec-annotation": "^1.0",
-        "friendsofphp/php-cs-fixer": "^2.10",
+        "drupol/phptree": "dev-master",
+        "friendsofphp/php-cs-fixer": "^2.13",
+        "graphp/graphviz": "^0.2.1",
         "infection/infection": "^0.11.2",
         "jakub-onderka/php-parallel-lint": "^1.0",
         "leanphp/phpspec-code-coverage": "^4",
@@ -32,7 +34,6 @@
         "phpro/grumphp": "^0.14.0",
         "phpspec/phpspec": "^4",
         "phpstan/phpstan": "^0.10",
-        "pitsolu/merkle-tree": "dev-master",
         "pleonasm/merkle-tree": "^1.0",
         "roave/better-reflection": "dev-master",
         "roave/security-advisories": "dev-master",

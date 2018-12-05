@@ -19,4 +19,11 @@ interface HasherInterface
      *   The output string, hashed.
      */
     public function hash(string $data): string;
+
+    /**
+     * @param string|null $data
+     *
+     * @return string
+     */
+    public function unpack(string $data = null): string;
 }

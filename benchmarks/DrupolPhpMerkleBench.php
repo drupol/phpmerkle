@@ -2,15 +2,8 @@
 
 namespace drupol\phpmerkle\benchmarks;
 
-use drupol\htmltag\Attribute\Attribute;
-use drupol\htmltag\Attribute\AttributeFactory;
-use drupol\htmltag\Attributes\Attributes;
-use drupol\htmltag\Attributes\AttributesFactory;
-use drupol\htmltag\HtmlTag;
-use drupol\phpmerkle\Hasher\DoubleSha256;
 use drupol\phpmerkle\Merkle;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
-use Pleo\Merkle\FixedSizeTree;
 
 /**
  * @Groups({"drupol/phpmerkle"})
@@ -18,13 +11,16 @@ use Pleo\Merkle\FixedSizeTree;
  */
 class DrupolPhpMerkleBench extends AbstractBench
 {
+    /**
+     * @var \drupol\phpmerkle\Node\MerkleNodeInterface
+     */
+    private $tree;
+
+    /**
+     * Init the object.
+     */
     public function initObject()
     {
-        $data = $this->getData();
-
-        $hasher = new DoubleSha256();
-
-        $this->tree = new Merkle($data, $hasher);
     }
 
     /**
@@ -34,6 +30,12 @@ class DrupolPhpMerkleBench extends AbstractBench
      */
     public function benchHash()
     {
+        $this->tree = new Merkle();
+
+        foreach ($this->getData() as $key => $value) {
+            $this->tree->set($key, $value);
+        }
+
         $this->tree->hash();
     }
 }

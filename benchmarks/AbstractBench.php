@@ -9,6 +9,6 @@ abstract class AbstractBench
      */
     public function getData()
     {
-        return array_merge(range('a', 'z'), range('A', 'Z'));
+        return \array_merge(\range('a', 'z'), \range('A', 'Z'));
     }
 }

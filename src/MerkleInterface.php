@@ -5,36 +5,12 @@ declare(strict_types = 1);
 namespace drupol\phpmerkle;
 
 /**
- * Interface MerkleInterface
+ * Class MerkleInterface
  */
-interface MerkleInterface extends \ArrayAccess, \Countable, \IteratorAggregate
+interface MerkleInterface
 {
     /**
-     * Get the hash of the array.
-     *
-     * @return string
-     *   The hash of the array.
-     *
-     * @throws \RuntimeException
+     * @return string|null
      */
-    public function hash(): string;
-
-    /**
-     * Get the state of the tree at a particular level.
-     *
-     * @param int $level
-     *   The level.
-     *
-     * @return string[]
-     *   The hashes array.
-     */
-    public function level(int $level): array;
-
-    /**
-     * Get the tree depth.
-     *
-     * @return int
-     *   The tree depth.
-     */
-    public function depth(): int;
+    public function hash(): ?string;
 }
