@@ -7,7 +7,7 @@ namespace drupol\phpmerkle;
 /**
  * Class MerkleInterface
  */
-interface MerkleInterface
+interface MerkleInterface extends \ArrayAccess
 {
     /**
      * @return string|null

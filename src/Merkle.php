@@ -24,17 +24,21 @@ class Merkle implements MerkleInterface
      *
      * @var string|null
      */
-    public $hash;
+    private $hash;
 
     /**
-     * @var mixed[]
+     * The items.
+     *
+     * @var mixed[]|null
      */
     protected $items;
 
     /**
+     * The capacity, a Merkle tree uses 2 by default.
+     *
      * @var int
      */
-    public $capacity;
+    private $capacity;
 
     /**
      * Merkle constructor.
@@ -51,6 +55,40 @@ class Merkle implements MerkleInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->items[$offset]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetGet($offset)
+    {
+        return $this->items[$offset];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->items[$offset] = $value;
+        $this->hash = null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->items[$offset]);
+        $this->hash = null;
+    }
+
+    /**
      * Hash a tree.
      *
      * @return string|null
@@ -62,7 +100,28 @@ class Merkle implements MerkleInterface
             return $this->hash;
         }
 
+        if (null === $this->items) {
+            throw new \RuntimeException('Merkle tree is empty, unable to get the hash().');
+        }
+
         $items = $this->items;
+
+        $items = \array_replace(
+            \array_pad(
+                [],
+                (int) \max(
+                    [
+                        \max(\array_keys($items)),
+                        \count($items),
+                        $this->capacity,
+                    ]
+                ),
+                null
+            ),
+            $items
+        );
+
+        \ksort($items);
 
         while (\count($items) > 1) {
             $items = \array_map(
@@ -74,28 +133,6 @@ class Merkle implements MerkleInterface
         $this->hash = \current($items);
 
         return $this->hash;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function set($key, $value)
-    {
-        $this->items[$key] = $value;
-
-        $size = (int) \max([\max(\array_keys($this->items)), \count($this->items)]);
-
-        for ($i = 0; $i < $size; $i++) {
-            $this->items += [
-                $i => null,
-            ];
-        }
-
-        \ksort($this->items);
-
-        $this->hash = null;
-
-        return $this;
     }
 
     /**
@@ -122,12 +159,17 @@ class Merkle implements MerkleInterface
             return null;
         }
 
-        $filler = \current($filtered);
+        $filtered += \array_pad(
+            [],
+            $this->capacity,
+            \current($filtered)
+        );
 
-        for ($i = 0; $i < $this->capacity; $i++) {
-            $chunk[$i] = $chunk[$i] ?? $filler;
-        }
-
-        return $this->getHasher()->hash(\implode('', $chunk));
+        return $this->getHasher()->hash(
+            \implode(
+                '',
+                $filtered
+            )
+        );
     }
 }
