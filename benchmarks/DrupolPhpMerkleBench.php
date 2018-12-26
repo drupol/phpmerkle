@@ -12,7 +12,7 @@ use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
 class DrupolPhpMerkleBench extends AbstractBench
 {
     /**
-     * @var \drupol\phpmerkle\Node\MerkleNodeInterface
+     * @var \drupol\phpmerkle\MerkleInterface
      */
     private $tree;
 
@@ -33,7 +33,7 @@ class DrupolPhpMerkleBench extends AbstractBench
         $this->tree = new Merkle();
 
         foreach ($this->getData() as $key => $value) {
-            $this->tree->set($key, $value);
+            $this->tree[$key] = $value;
         }
 
         $this->tree->hash();
