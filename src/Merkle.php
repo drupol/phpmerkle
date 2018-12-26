@@ -83,13 +83,19 @@ class Merkle implements MerkleInterface
     {
         $this->items[$key] = $value;
 
-        $size = (int) \max([\max(\array_keys($this->items)), \count($this->items)]);
-
-        for ($i = 0; $i < $size; $i++) {
-            $this->items += [
-                $i => null,
-            ];
-        }
+        $this->items = \array_replace(
+            \array_pad(
+                [],
+                (int) \max(
+                    [
+                        \max(\array_keys($this->items)),
+                        \count($this->items),
+                    ]
+                ),
+                null
+            ),
+            $this->items
+        );
 
         \ksort($this->items);
 
@@ -122,12 +128,17 @@ class Merkle implements MerkleInterface
             return null;
         }
 
-        $filler = \current($filtered);
+        $filtered += \array_pad(
+            [],
+            $this->capacity,
+            \current($filtered)
+        );
 
-        for ($i = 0; $i < $this->capacity; $i++) {
-            $chunk[$i] = $chunk[$i] ?? $filler;
-        }
-
-        return $this->getHasher()->hash(\implode('', $chunk));
+        return $this->getHasher()->hash(
+            \implode(
+                '',
+                $filtered
+            )
+        );
     }
 }
