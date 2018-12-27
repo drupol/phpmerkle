@@ -14,11 +14,13 @@ interface HasherInterface
      *
      * @param string $data
      *   The input string.
+     * @param bool $raw_output
+     *   Raw output.
      *
      * @return string
      *   The output string, hashed.
      */
-    public function hash(string $data): string;
+    public function hash(string $data, bool $raw_output = true): string;
 
     /**
      * @param string|null $data

@@ -9,7 +9,7 @@ class DummyHasher implements HasherInterface
     /**
      * {@inheritdoc}
      */
-    public function hash(string $data): string
+    public function hash(string $data, bool $raw_output = true): string
     {
         return \strtoupper($data);
     }
