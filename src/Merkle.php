@@ -106,6 +106,12 @@ class Merkle implements MerkleInterface
 
         $items = $this->items;
 
+        foreach ($items as $key => $value) {
+            if (null !== $value) {
+                $items[$key] = $this->getHasher()->hash($value);
+            }
+        }
+
         $items = \array_replace(
             \array_pad(
                 [],
@@ -130,7 +136,7 @@ class Merkle implements MerkleInterface
             );
         }
 
-        $this->hash = \current($items);
+        $this->hash = $this->getHasher()->unpack(\current($items));
 
         return $this->hash;
     }
