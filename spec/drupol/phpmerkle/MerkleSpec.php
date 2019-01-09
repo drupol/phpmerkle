@@ -157,7 +157,7 @@ class MerkleSpec extends ObjectBehavior
         $this->offsetUnset(5);
         $this->hash()->shouldReturn('AA');
 
-        $this[5] = 'E';
+        $this[] = 'E';
         $this->hash()->shouldReturn('AAAAEEEE');
     }
 }
