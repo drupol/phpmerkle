@@ -18,8 +18,8 @@ class Sha256 extends AbstractHasher
     /**
      * {@inheritdoc}
      */
-    public function unpack(string $hash = null): string
+    public function unpack(string $hash): string
     {
-        return \implode('', \unpack('H*', (string) $hash));
+        return \implode('', \unpack('H*', $hash));
     }
 }

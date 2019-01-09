@@ -23,9 +23,13 @@ interface HasherInterface
     public function hash(string $data, bool $raw_output = true): string;
 
     /**
-     * @param string|null $data
+     * Unpack binary data.
+     *
+     * @param string $data
+     *   The binary data.
      *
      * @return string
+     *   The string.
      */
-    public function unpack(string $data = null): string;
+    public function unpack(string $data): string;
 }

@@ -75,7 +75,12 @@ class Merkle implements MerkleInterface
      */
     public function offsetSet($offset, $value)
     {
-        $this->items[$offset] = $value;
+        if (null === $offset) {
+            $this->items[] = $value;
+        } else {
+            $this->items[$offset] = $value;
+        }
+
         $this->hash = null;
     }
 
@@ -115,7 +120,7 @@ class Merkle implements MerkleInterface
         $items = \array_replace(
             \array_pad(
                 [],
-                (int) \max(
+                \max(
                     [
                         \max(\array_keys($items)),
                         \count($items),
@@ -127,7 +132,8 @@ class Merkle implements MerkleInterface
             $items
         );
 
-        \ksort($items);
+        // Is it really needed ?
+        //\ksort($items);
 
         while (\count($items) > 1) {
             $items = \array_map(

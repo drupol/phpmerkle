@@ -24,5 +24,7 @@ class DoubleSha256Spec extends ObjectBehavior
         $data = 'hello world';
 
         $this->unpack($this->hash($data, true))->shouldReturn('bc62d4b80d9e36da29c16c5d4d9f11731f36052c72401a76c23c0fb5a9b74423');
+
+        $this->unpack($this->hash($data))->shouldReturn('bc62d4b80d9e36da29c16c5d4d9f11731f36052c72401a76c23c0fb5a9b74423');
     }
 }
