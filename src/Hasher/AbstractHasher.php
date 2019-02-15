@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\phpmerkle\Hasher;
 
 /**
- * Class AbstractHasher
+ * Class AbstractHasher.
  */
 abstract class AbstractHasher implements HasherInterface
 {
@@ -13,13 +15,13 @@ abstract class AbstractHasher implements HasherInterface
      * @param string $algo
      *   The algorithm to use
      * @param string $data
-     *   The data to hash.
+     *   The data to hash
      * @param bool $raw_output
      *   When set to TRUE, outputs raw binary data.
      *   FALSE outputs lowercase a hex string.
      *
      * @return string
-     *   The hash.
+     *   The hash
      */
     protected function doHash(string $algo, string $data, bool $raw_output)
     {

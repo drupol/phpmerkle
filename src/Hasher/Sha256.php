@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\phpmerkle\Hasher;
 
 /**
- * Class Sha256
+ * Class Sha256.
  */
 class Sha256 extends AbstractHasher
 {

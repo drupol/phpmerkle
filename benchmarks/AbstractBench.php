@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\phpmerkle\benchmarks;
 
 abstract class AbstractBench

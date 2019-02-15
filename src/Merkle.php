@@ -8,28 +8,14 @@ use drupol\phpmerkle\Hasher\DoubleSha256;
 use drupol\phpmerkle\Hasher\HasherInterface;
 
 /**
- * Class Merkle
+ * Class Merkle.
  */
 class Merkle implements MerkleInterface
 {
     /**
-     * The hasher.
-     *
-     * @var \drupol\phpmerkle\Hasher\HasherInterface
-     */
-    private $hasher;
-
-    /**
-     * The node's hash.
-     *
-     * @var string|null
-     */
-    private $hash;
-
-    /**
      * The items.
      *
-     * @var mixed[]|null
+     * @var null|mixed[]
      */
     protected $items;
 
@@ -39,6 +25,19 @@ class Merkle implements MerkleInterface
      * @var int
      */
     private $capacity;
+
+    /**
+     * The node's hash.
+     *
+     * @var null|string
+     */
+    private $hash;
+    /**
+     * The hasher.
+     *
+     * @var \drupol\phpmerkle\Hasher\HasherInterface
+     */
+    private $hasher;
 
     /**
      * Merkle constructor.
@@ -52,6 +51,68 @@ class Merkle implements MerkleInterface
     ) {
         $this->hasher = $hasher ?? new DoubleSha256();
         $this->capacity = $capacity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHasher(): HasherInterface
+    {
+        return $this->hasher;
+    }
+
+    /**
+     * Hash a tree.
+     *
+     * @return null|string
+     *   Return a hash or null
+     */
+    public function hash(): ?string
+    {
+        if (isset($this->hash)) {
+            return $this->hash;
+        }
+
+        if (null === $this->items) {
+            throw new \RuntimeException('Merkle tree is empty, unable to get the hash().');
+        }
+
+        $items = $this->items;
+
+        foreach ($items as $key => $value) {
+            if (null !== $value) {
+                $items[$key] = $this->getHasher()->hash($value);
+            }
+        }
+
+        $items = \array_replace(
+            \array_pad(
+                [],
+                \max(
+                    [
+                        \max(\array_keys($items)),
+                        \count($items),
+                        $this->capacity,
+                    ]
+                ),
+                null
+            ),
+            $items
+        );
+
+        // Is it really needed ?
+        //\ksort($items);
+
+        while (1 < \count($items)) {
+            $items = \array_map(
+                [$this, 'reducePairOfStrings'],
+                \array_chunk($items, $this->capacity)
+            );
+        }
+
+        $this->hash = $this->getHasher()->unpack(\current($items));
+
+        return $this->hash;
     }
 
     /**
@@ -94,74 +155,12 @@ class Merkle implements MerkleInterface
     }
 
     /**
-     * Hash a tree.
-     *
-     * @return string|null
-     *   Return a hash or null.
-     */
-    public function hash(): ?string
-    {
-        if (isset($this->hash)) {
-            return $this->hash;
-        }
-
-        if (null === $this->items) {
-            throw new \RuntimeException('Merkle tree is empty, unable to get the hash().');
-        }
-
-        $items = $this->items;
-
-        foreach ($items as $key => $value) {
-            if (null !== $value) {
-                $items[$key] = $this->getHasher()->hash($value);
-            }
-        }
-
-        $items = \array_replace(
-            \array_pad(
-                [],
-                \max(
-                    [
-                        \max(\array_keys($items)),
-                        \count($items),
-                        $this->capacity,
-                    ]
-                ),
-                null
-            ),
-            $items
-        );
-
-        // Is it really needed ?
-        //\ksort($items);
-
-        while (\count($items) > 1) {
-            $items = \array_map(
-                [$this, 'reducePairOfStrings'],
-                \array_chunk($items, $this->capacity)
-            );
-        }
-
-        $this->hash = $this->getHasher()->unpack(\current($items));
-
-        return $this->hash;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getHasher(): HasherInterface
-    {
-        return $this->hasher;
-    }
-
-    /**
      * Reduce a pair of string into one.
      *
      * @param string[] $chunk
-     *   The chunk.
+     *   The chunk
      *
-     * @return string|null
+     * @return null|string
      */
     private function reducePairOfStrings(array $chunk): ?string
     {

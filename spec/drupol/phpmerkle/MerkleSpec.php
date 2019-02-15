@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace spec\drupol\phpmerkle;
 
 use drupol\phpmerkle\Hasher\DoubleSha256;
@@ -9,13 +11,13 @@ use PhpSpec\ObjectBehavior;
 
 class MerkleSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    public function it_can_cache_a_hash()
     {
         $hasher = new DummyHasher();
 
         $this->beConstructedWith(2, $hasher);
 
-        $this->shouldThrow(\RuntimeException::class)->during('hash');
+        $this->shouldThrow(\Exception::class)->during('hash');
 
         $data = [
             'A',
@@ -29,7 +31,15 @@ class MerkleSpec extends ObjectBehavior
             $this[$key] = $value;
         }
 
-        $this->shouldHaveType(Merkle::class);
+        $this->hash()->shouldReturn('ABCDEEEE');
+        $this->hash()->shouldReturn('ABCDEEEE');
+    }
+
+    public function it_can_get_the_hasher()
+    {
+        $this
+            ->getHasher()
+            ->shouldBeAnInstanceOf(DoubleSha256::class);
     }
 
     public function it_can_hash()
@@ -56,9 +66,9 @@ class MerkleSpec extends ObjectBehavior
 
         $data = [
             'A',
-            NULL,
-            NULL,
-            NULL,
+            null,
+            null,
+            null,
             'E',
         ];
 
@@ -80,13 +90,6 @@ class MerkleSpec extends ObjectBehavior
         $this->hash()->shouldReturn('AAAAEEEE');
     }
 
-    public function it_can_get_the_hasher()
-    {
-        $this
-            ->getHasher()
-            ->shouldBeAnInstanceOf(DoubleSha256::class);
-    }
-
     public function it_can_hash_with_no_parameters()
     {
         $data = [
@@ -103,30 +106,6 @@ class MerkleSpec extends ObjectBehavior
 
         $this->shouldHaveType(Merkle::class);
         $this->hash()->shouldReturn('a46bfa668fa3a78141d2a9e349abc3d38c36b8d157202990beb611e0a446103f');
-    }
-
-    public function it_can_cache_a_hash()
-    {
-        $hasher = new DummyHasher();
-
-        $this->beConstructedWith(2, $hasher);
-
-        $this->shouldThrow(\Exception::class)->during('hash');
-
-        $data = [
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-        ];
-
-        foreach ($data as $key => $value) {
-            $this[$key] = $value;
-        }
-
-        $this->hash()->shouldReturn('ABCDEEEE');
-        $this->hash()->shouldReturn('ABCDEEEE');
     }
 
     public function it_can_use_ArrayAccess_methods()
@@ -159,5 +138,28 @@ class MerkleSpec extends ObjectBehavior
 
         $this[] = 'E';
         $this->hash()->shouldReturn('AAAAEEEE');
+    }
+
+    public function it_is_initializable()
+    {
+        $hasher = new DummyHasher();
+
+        $this->beConstructedWith(2, $hasher);
+
+        $this->shouldThrow(\RuntimeException::class)->during('hash');
+
+        $data = [
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+        ];
+
+        foreach ($data as $key => $value) {
+            $this[$key] = $value;
+        }
+
+        $this->shouldHaveType(Merkle::class);
     }
 }

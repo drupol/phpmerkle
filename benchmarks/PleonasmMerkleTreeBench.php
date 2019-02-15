@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\phpmerkle\benchmarks;
 
 use Pleo\Merkle\FixedSizeTree;
@@ -11,24 +13,13 @@ use Pleo\Merkle\FixedSizeTree;
 class PleonasmMerkleTreeBench extends AbstractBench
 {
     /**
-     * @var FixedSizeTree
-     */
-    private $tree;
-
-    /**
      * @var callable
      */
     private $hasher;
-
     /**
-     * Init the object.
+     * @var FixedSizeTree
      */
-    public function initObject()
-    {
-        $this->hasher = function ($data) {
-            return \hash('sha256', \hash('sha256', $data));
-        };
-    }
+    private $tree;
 
     /**
      * @Revs({1, 100, 1000})
@@ -45,5 +36,15 @@ class PleonasmMerkleTreeBench extends AbstractBench
         }
 
         $this->tree->hash();
+    }
+
+    /**
+     * Init the object.
+     */
+    public function initObject()
+    {
+        $this->hasher = function ($data) {
+            return \hash('sha256', \hash('sha256', $data));
+        };
     }
 }

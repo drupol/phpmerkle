@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace spec\drupol\phpmerkle\Hasher;
 
 use drupol\phpmerkle\Hasher\DoubleSha256;
@@ -7,11 +9,6 @@ use PhpSpec\ObjectBehavior;
 
 class DoubleSha256Spec extends ObjectBehavior
 {
-    public function it_is_initializable()
-    {
-        $this->shouldHaveType(DoubleSha256::class);
-    }
-
     public function it_can_hash()
     {
         $data = 'hello world';
@@ -26,5 +23,10 @@ class DoubleSha256Spec extends ObjectBehavior
         $this->unpack($this->hash($data, true))->shouldReturn('bc62d4b80d9e36da29c16c5d4d9f11731f36052c72401a76c23c0fb5a9b74423');
 
         $this->unpack($this->hash($data))->shouldReturn('bc62d4b80d9e36da29c16c5d4d9f11731f36052c72401a76c23c0fb5a9b74423');
+    }
+
+    public function it_is_initializable()
+    {
+        $this->shouldHaveType(DoubleSha256::class);
     }
 }

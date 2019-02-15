@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\phpmerkle\tests;
 
 use drupol\phpmerkle\Hasher\HasherInterface;

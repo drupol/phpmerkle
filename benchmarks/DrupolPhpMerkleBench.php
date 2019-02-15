@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\phpmerkle\benchmarks;
 
 use drupol\phpmerkle\Merkle;
@@ -17,13 +19,6 @@ class DrupolPhpMerkleBench extends AbstractBench
     private $tree;
 
     /**
-     * Init the object.
-     */
-    public function initObject()
-    {
-    }
-
-    /**
      * @Revs({1, 100, 1000})
      * @Iterations(5)
      * @Warmup(10)
@@ -37,5 +32,12 @@ class DrupolPhpMerkleBench extends AbstractBench
         }
 
         $this->tree->hash();
+    }
+
+    /**
+     * Init the object.
+     */
+    public function initObject()
+    {
     }
 }

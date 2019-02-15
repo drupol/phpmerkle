@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace drupol\phpmerkle\Hasher;
 
 /**
- * Interface HasherInterface
+ * Interface HasherInterface.
  */
 interface HasherInterface
 {
@@ -13,12 +13,12 @@ interface HasherInterface
      * Get a hash of a string.
      *
      * @param string $data
-     *   The input string.
+     *   The input string
      * @param bool $raw_output
-     *   Raw output.
+     *   Raw output
      *
      * @return string
-     *   The output string, hashed.
+     *   The output string, hashed
      */
     public function hash(string $data, bool $raw_output = true): string;
 
@@ -26,10 +26,10 @@ interface HasherInterface
      * Unpack binary data.
      *
      * @param string $data
-     *   The binary data.
+     *   The binary data
      *
      * @return string
-     *   The string.
+     *   The string
      */
     public function unpack(string $data): string;
 }
