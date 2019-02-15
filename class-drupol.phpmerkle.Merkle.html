@@ -94,7 +94,7 @@
 
         <div class="panel panel-default">
             <div class="panel-body">
-                Class Merkle
+                Class Merkle.
             </div>
         </div>
 
@@ -139,7 +139,7 @@
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#___construct">#</a>
-            <code><a href="source-class-drupol.phpmerkle.Merkle.html#49-55">__construct</a>( <span> int <span class="property-name">$capacity</span> = <span class="php-num">2</span></span>, <span> <a href="interface-drupol.phpmerkle.Hasher.HasherInterface.html">drupol\phpmerkle\Hasher\HasherInterface</a> <span class="property-name">$hasher</span> = <span class="php-keyword1">NULL</span></span> )</code>
+            <code><a href="source-class-drupol.phpmerkle.Merkle.html#48-54">__construct</a>( <span> int <span class="property-name">$capacity</span> = <span class="php-num">2</span></span>, <span> <a href="interface-drupol.phpmerkle.Hasher.HasherInterface.html">drupol\phpmerkle\Hasher\HasherInterface</a> <span class="property-name">$hasher</span> = <span class="php-keyword1">NULL</span></span> )</code>
 
             <div class="description">
                 Merkle constructor.
@@ -151,6 +151,78 @@
 
 
 
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getHasher">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                 public 
+                
+                
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getHasher">#</a>
+            <code><a href="source-class-drupol.phpmerkle.Merkle.html#59-62">getHasher</a>( )</code>
+
+            <div class="description">
+                {@inheritdoc}
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_hash">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                 public 
+                
+                
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_hash">#</a>
+            <code><a href="source-class-drupol.phpmerkle.Merkle.html#70-116">hash</a>( )</code>
+
+            <div class="description">
+                Hash a tree.
+
+
+
+
+
+
+
+
+                        <h2>Implementation of</h2>
+                        <div>
+                            <code>
+                                <a href="interface-drupol.phpmerkle.MerkleInterface.html#_hash">
+                                    drupol\phpmerkle\MerkleInterface::hash()
+                                </a>
+                            </code>
+                        </div>
             </div>
         </div>
     </td>
@@ -171,7 +243,7 @@
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_offsetExists">#</a>
-            <code><a href="source-class-drupol.phpmerkle.Merkle.html#60-63">offsetExists</a>( <span> <span class="property-name">$offset</span> </span> )</code>
+            <code><a href="source-class-drupol.phpmerkle.Merkle.html#121-124">offsetExists</a>( <span> <span class="property-name">$offset</span> </span> )</code>
 
             <div class="description">
                 {@inheritdoc}
@@ -211,7 +283,7 @@
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_offsetGet">#</a>
-            <code><a href="source-class-drupol.phpmerkle.Merkle.html#68-71">offsetGet</a>( <span> <span class="property-name">$offset</span> </span> )</code>
+            <code><a href="source-class-drupol.phpmerkle.Merkle.html#129-132">offsetGet</a>( <span> <span class="property-name">$offset</span> </span> )</code>
 
             <div class="description">
                 {@inheritdoc}
@@ -251,7 +323,7 @@
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_offsetSet">#</a>
-            <code><a href="source-class-drupol.phpmerkle.Merkle.html#76-85">offsetSet</a>( <span> <span class="property-name">$offset</span> </span>, <span> <span class="property-name">$value</span> </span> )</code>
+            <code><a href="source-class-drupol.phpmerkle.Merkle.html#137-146">offsetSet</a>( <span> <span class="property-name">$offset</span> </span>, <span> <span class="property-name">$value</span> </span> )</code>
 
             <div class="description">
                 {@inheritdoc}
@@ -291,7 +363,7 @@
     <td class="name">
         <div>
             <a class="anchor pull-right" href="#_offsetUnset">#</a>
-            <code><a href="source-class-drupol.phpmerkle.Merkle.html#90-94">offsetUnset</a>( <span> <span class="property-name">$offset</span> </span> )</code>
+            <code><a href="source-class-drupol.phpmerkle.Merkle.html#151-155">offsetUnset</a>( <span> <span class="property-name">$offset</span> </span> )</code>
 
             <div class="description">
                 {@inheritdoc}
@@ -315,78 +387,6 @@
         </div>
     </td>
 </tr>
-
-
-
-<tr id="_hash">
-
-    <td class="attributes col-md-1">
-        <code class="keyword">
-                 public 
-                
-                
-        </code>
-    </td>
-
-    <td class="name">
-        <div>
-            <a class="anchor pull-right" href="#_hash">#</a>
-            <code><a href="source-class-drupol.phpmerkle.Merkle.html#102-148">hash</a>( )</code>
-
-            <div class="description">
-                Hash a tree.
-
-
-
-
-
-
-
-
-                        <h2>Implementation of</h2>
-                        <div>
-                            <code>
-                                <a href="interface-drupol.phpmerkle.MerkleInterface.html#_hash">
-                                    drupol\phpmerkle\MerkleInterface::hash()
-                                </a>
-                            </code>
-                        </div>
-            </div>
-        </div>
-    </td>
-</tr>
-
-
-
-<tr id="_getHasher">
-
-    <td class="attributes col-md-1">
-        <code class="keyword">
-                 public 
-                
-                
-        </code>
-    </td>
-
-    <td class="name">
-        <div>
-            <a class="anchor pull-right" href="#_getHasher">#</a>
-            <code><a href="source-class-drupol.phpmerkle.Merkle.html#153-156">getHasher</a>( )</code>
-
-            <div class="description">
-                {@inheritdoc}
-
-
-
-
-
-
-
-
-            </div>
-        </div>
-    </td>
-</tr>
         </table>
 
 
@@ -400,13 +400,13 @@
         <code class="keyword">
             protected 
 
-            array|null
+            null|array
         </code>
     </td>
 
     <td class="name">
         <code>
-            <a href="source-class-drupol.phpmerkle.Merkle.html#34" class="property-name">$items</a>
+            <a href="source-class-drupol.phpmerkle.Merkle.html#20" class="property-name">$items</a>
         </code>
         <div class="description">
             The items.
