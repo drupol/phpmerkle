@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace drupol\phpmerkle\tests;
 
@@ -13,7 +13,7 @@ class DummyHasher implements HasherInterface
      */
     public function hash(string $data, bool $raw_output = true): string
     {
-        return \strtoupper($data);
+        return \mb_strtoupper($data);
     }
 
     /**

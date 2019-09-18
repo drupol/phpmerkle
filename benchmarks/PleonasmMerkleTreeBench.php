@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace drupol\phpmerkle\benchmarks;
 
@@ -16,6 +16,7 @@ class PleonasmMerkleTreeBench extends AbstractBench
      * @var callable
      */
     private $hasher;
+
     /**
      * @var FixedSizeTree
      */
@@ -43,7 +44,7 @@ class PleonasmMerkleTreeBench extends AbstractBench
      */
     public function initObject()
     {
-        $this->hasher = function ($data) {
+        $this->hasher = static function ($data) {
             return \hash('sha256', \hash('sha256', $data));
         };
     }

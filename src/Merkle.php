@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace drupol\phpmerkle;
 
@@ -32,6 +32,7 @@ class Merkle implements MerkleInterface
      * @var null|string
      */
     private $hash;
+
     /**
      * The hasher.
      *
@@ -102,6 +103,10 @@ class Merkle implements MerkleInterface
 
         // Is it really needed ?
         //\ksort($items);
+
+        if (false === \is_array($items)) {
+            return null;
+        }
 
         while (1 < \count($items)) {
             $items = \array_map(
