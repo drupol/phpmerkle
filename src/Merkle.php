@@ -89,13 +89,13 @@ class Merkle implements MerkleInterface
         $items = \array_replace(
             \array_pad(
                 [],
-                \max(
+                (int) (\max(
                     [
                         \max(\array_keys($items)),
                         \count($items),
                         $this->capacity,
                     ]
-                ),
+                )),
                 null
             ),
             $items
