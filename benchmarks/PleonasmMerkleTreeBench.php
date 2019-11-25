@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace drupol\phpmerkle\benchmarks;
 
 use Pleo\Merkle\FixedSizeTree;
+use function count;
 
 /**
  * @Groups({"pleonasm/merkle-tree"})
@@ -30,7 +31,7 @@ class PleonasmMerkleTreeBench extends AbstractBench
     public function benchHash()
     {
         $data = $this->getData();
-        $this->tree = new FixedSizeTree(\count($data), $this->hasher);
+        $this->tree = new FixedSizeTree(count($data), $this->hasher);
 
         foreach ($data as $key => $value) {
             $this->tree->set($key, $value);
@@ -45,7 +46,7 @@ class PleonasmMerkleTreeBench extends AbstractBench
     public function initObject()
     {
         $this->hasher = static function ($data) {
-            return \hash('sha256', \hash('sha256', $data));
+            return hash('sha256', hash('sha256', $data));
         };
     }
 }

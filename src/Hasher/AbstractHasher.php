@@ -25,6 +25,6 @@ abstract class AbstractHasher implements HasherInterface
      */
     protected function doHash(string $algo, string $data, bool $raw_output)
     {
-        return \hash($algo, $data, $raw_output);
+        return hash($algo, $data, $raw_output);
     }
 }

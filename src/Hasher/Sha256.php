@@ -22,6 +22,6 @@ class Sha256 extends AbstractHasher
      */
     public function unpack(string $hash): string
     {
-        return \implode('', \unpack('H*', $hash));
+        return implode('', unpack('H*', $hash));
     }
 }

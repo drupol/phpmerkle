@@ -13,13 +13,13 @@ class DummyHasher implements HasherInterface
      */
     public function hash(string $data, bool $raw_output = true): string
     {
-        return \mb_strtoupper($data);
+        return mb_strtoupper($data);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function unpack(string $data = null): string
+    public function unpack(?string $data = null): string
     {
         return $data;
     }

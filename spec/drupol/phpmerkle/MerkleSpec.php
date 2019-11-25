@@ -7,7 +7,9 @@ namespace spec\drupol\phpmerkle;
 use drupol\phpmerkle\Hasher\DoubleSha256;
 use drupol\phpmerkle\Merkle;
 use drupol\phpmerkle\tests\DummyHasher;
+use Exception;
 use PhpSpec\ObjectBehavior;
+use RuntimeException;
 
 class MerkleSpec extends ObjectBehavior
 {
@@ -17,7 +19,7 @@ class MerkleSpec extends ObjectBehavior
 
         $this->beConstructedWith(2, $hasher);
 
-        $this->shouldThrow(\Exception::class)->during('hash');
+        $this->shouldThrow(Exception::class)->during('hash');
 
         $data = [
             'A',
@@ -48,7 +50,7 @@ class MerkleSpec extends ObjectBehavior
 
         $this->beConstructedWith(2, $hasher);
 
-        $this->shouldThrow(\Exception::class)->during('hash');
+        $this->shouldThrow(Exception::class)->during('hash');
 
         $data = [
             'A',
@@ -114,7 +116,7 @@ class MerkleSpec extends ObjectBehavior
 
         $this->beConstructedWith(2, $hasher);
 
-        $this->shouldThrow(\Exception::class)->during('hash');
+        $this->shouldThrow(Exception::class)->during('hash');
 
         $data = [
             0 => 'A',
@@ -146,7 +148,7 @@ class MerkleSpec extends ObjectBehavior
 
         $this->beConstructedWith(2, $hasher);
 
-        $this->shouldThrow(\RuntimeException::class)->during('hash');
+        $this->shouldThrow(RuntimeException::class)->during('hash');
 
         $data = [
             'A',

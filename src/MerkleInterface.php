@@ -7,10 +7,10 @@ namespace drupol\phpmerkle;
 /**
  * Class MerkleInterface.
  */
-interface MerkleInterface extends \ArrayAccess
+interface MerkleInterface
 {
     /**
-     * @return null|string
+     * @return string|null
      */
     public function hash(): ?string;
 }

@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace drupol\phpmerkle;
 
+use ArrayAccess;
+use Countable;
 use drupol\phpmerkle\Hasher\DoubleSha256;
 use drupol\phpmerkle\Hasher\HasherInterface;
+use IteratorAggregate;
+use RuntimeException;
+
+use function count;
+use function is_array;
 
 /**
  * Class Merkle.
  */
-class Merkle implements MerkleInterface
+final class Merkle implements ArrayAccess, Countable, IteratorAggregate, MerkleInterface
 {
-    /**
-     * The items.
-     *
-     * @var null|mixed[]
-     */
-    protected $items;
-
     /**
      * The capacity, a Merkle tree uses 2 by default.
      *
@@ -29,7 +29,7 @@ class Merkle implements MerkleInterface
     /**
      * The node's hash.
      *
-     * @var null|string
+     * @var string|null
      */
     private $hash;
 
@@ -41,6 +41,13 @@ class Merkle implements MerkleInterface
     private $hasher;
 
     /**
+     * The items.
+     *
+     * @var mixed[]|null
+     */
+    private $items;
+
+    /**
      * Merkle constructor.
      *
      * @param int $capacity
@@ -48,10 +55,18 @@ class Merkle implements MerkleInterface
      */
     public function __construct(
         int $capacity = 2,
-        HasherInterface $hasher = null
+        ?HasherInterface $hasher = null
     ) {
         $this->hasher = $hasher ?? new DoubleSha256();
         $this->capacity = $capacity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return null === $this->items ? 0 : count($this->items);
     }
 
     /**
@@ -63,9 +78,17 @@ class Merkle implements MerkleInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getIterator()
+    {
+        yield from $this->items;
+    }
+
+    /**
      * Hash a tree.
      *
-     * @return null|string
+     * @return string|null
      *   Return a hash or null
      */
     public function hash(): ?string
@@ -75,7 +98,7 @@ class Merkle implements MerkleInterface
         }
 
         if (null === $this->items) {
-            throw new \RuntimeException('Merkle tree is empty, unable to get the hash().');
+            throw new RuntimeException('Merkle tree is empty, unable to get the hash().');
         }
 
         $items = $this->items;
@@ -86,13 +109,13 @@ class Merkle implements MerkleInterface
             }
         }
 
-        $items = \array_replace(
-            \array_pad(
+        $items = array_replace(
+            array_pad(
                 [],
-                (int) (\max(
+                (int) (max(
                     [
-                        \max(\array_keys($items)),
-                        \count($items),
+                        max(array_keys($items)),
+                        count($items),
                         $this->capacity,
                     ]
                 )),
@@ -104,18 +127,18 @@ class Merkle implements MerkleInterface
         // Is it really needed ?
         //\ksort($items);
 
-        if (false === \is_array($items)) {
+        if (false === is_array($items)) {
             return null;
         }
 
-        while (1 < \count($items)) {
-            $items = \array_map(
+        while (1 < count($items)) {
+            $items = array_map(
                 [$this, 'reducePairOfStrings'],
-                \array_chunk($items, $this->capacity)
+                array_chunk($items, $this->capacity)
             );
         }
 
-        $this->hash = $this->getHasher()->unpack(\current($items));
+        $this->hash = $this->getHasher()->unpack(current($items));
 
         return $this->hash;
     }
@@ -165,24 +188,24 @@ class Merkle implements MerkleInterface
      * @param string[] $chunk
      *   The chunk
      *
-     * @return null|string
+     * @return string|null
      */
     private function reducePairOfStrings(array $chunk): ?string
     {
-        $filtered = \array_filter($chunk);
+        $filtered = array_filter($chunk);
 
         if ([] === $filtered) {
             return null;
         }
 
-        $filtered += \array_pad(
+        $filtered += array_pad(
             [],
             $this->capacity,
-            \current($filtered)
+            current($filtered)
         );
 
         return $this->getHasher()->hash(
-            \implode(
+            implode(
                 '',
                 $filtered
             )
