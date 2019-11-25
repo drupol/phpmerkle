@@ -1,20 +1,22 @@
-[![Latest Stable Version](https://poser.pugx.org/drupol/phpmerkle/v/stable)](https://packagist.org/packages/drupol/phpmerkle)
- [![Total Downloads](https://poser.pugx.org/drupol/phpmerkle/downloads)](https://packagist.org/packages/drupol/phpmerkle)
- [![Build Status](https://travis-ci.org/drupol/phpmerkle.svg?branch=master)](https://travis-ci.org/drupol/phpmerkle)
- [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/drupol/phpmerkle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/drupol/phpmerkle/?branch=master)
- [![Code Coverage](https://scrutinizer-ci.com/g/drupol/phpmerkle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/drupol/phpmerkle/?branch=master)
+[![Latest Stable Version](https://img.shields.io/packagist/v/drupol/phpmerkle.svg?style=flat-square)](https://packagist.org/packages/drupol/phpmerkle)
+ [![GitHub stars](https://img.shields.io/github/stars/drupol/phpmerkle.svg?style=flat-square)](https://packagist.org/packages/drupol/phpmerkle)
+ [![Total Downloads](https://img.shields.io/packagist/dt/drupol/phpmerkle.svg?style=flat-square)](https://packagist.org/packages/drupol/phpmerkle)
+ [![Build Status](https://img.shields.io/travis/drupol/phpmerkle/master.svg?style=flat-square)](https://travis-ci.org/drupol/phpmerkle)
+ [![Scrutinizer code quality](https://img.shields.io/scrutinizer/quality/g/drupol/phpmerkle/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/phpmerkle/?branch=master)
+ [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/drupol/phpmerkle/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/phpmerkle/?branch=master)
  [![Mutation testing badge](https://badge.stryker-mutator.io/github.com/drupol/phpmerkle/master)](https://stryker-mutator.github.io)
- [![License](https://poser.pugx.org/drupol/phpmerkle/license)](https://packagist.org/packages/drupol/phpmerkle)
+ [![Read the Docs](https://img.shields.io/readthedocs/phpmerkle?style=flat-square)](https://phpmerkle.readthedocs.io/)
+ [![License](https://img.shields.io/packagist/l/drupol/phpmerkle.svg?style=flat-square)](https://packagist.org/packages/drupol/phpmerkle)
+ [![Say Thanks!](https://img.shields.io/badge/Say-thanks-brightgreen.svg?style=flat-square)](https://saythanks.io/to/drupol)
+ [![Donate!](https://img.shields.io/badge/Donate-Paypal-brightgreen.svg?style=flat-square)](https://paypal.me/drupol)
 
 # PhpMerkle
-
-## Description
 
 A fast PHP implementation of the [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree) using simple arrays.
 
 ## Documentation
 
-API documentation is automatically generated with [APIGen](https://github.com/ApiGen/ApiGen) and available at [this address](https://not-a-number.io/phpmerkle/).
+TODO.
 
 ## Requirements
 
@@ -29,16 +31,21 @@ API documentation is automatically generated with [APIGen](https://github.com/Ap
 The object has to be used just like a regular array.
 
 ```php
-$merkle = new drupol\phpmerkle\Merkle();
+<?php
 
-$merkle[] = 'hello';
-$merkle[] = 'world';
+declare(strict_types=1);
 
-$merkle->hash(); // this returns: b9187808075710ab9c447c6ff6fd2aeb6c4bc10cf752e849102b87c0ecf97824
+include './vendor/autoload.php';
 
-$merkle['key'] = 'value';
+$tree = new drupol\phpmerkle\Merkle();
 
-$merkle['key']; // this returns: 'value';
+$sentence = 'Science is made up of so many things that appear obvious after they are explained .';
+
+foreach (explode(' ', $sentence) as $word) {
+    $tree[] = $word;
+}
+
+echo $tree->hash(); // c689102cdf2a5b30c2e21fdad85e4bb401085227aff672a7240ceb3410ff1fb6
 ```
 ## Code quality, tests and benchmarks
 
