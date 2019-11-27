@@ -7,7 +7,7 @@ namespace drupol\phpmerkle\Hasher;
 /**
  * Class Sha256.
  */
-class Sha256 extends AbstractHasher
+final class Sha256 extends AbstractHasher
 {
     /**
      * {@inheritdoc}

@@ -8,11 +8,11 @@ use ArrayAccess;
 use Countable;
 use drupol\phpmerkle\Hasher\DoubleSha256;
 use drupol\phpmerkle\Hasher\HasherInterface;
+use InvalidArgumentException;
 use IteratorAggregate;
 use RuntimeException;
 
 use function count;
-use function is_array;
 
 /**
  * Class Merkle.
@@ -58,6 +58,11 @@ final class Merkle implements ArrayAccess, Countable, IteratorAggregate, MerkleI
         ?HasherInterface $hasher = null
     ) {
         $this->hasher = $hasher ?? new DoubleSha256();
+
+        if (1 >= $capacity) {
+            throw new InvalidArgumentException('Capacity argument must be greater than one.');
+        }
+
         $this->capacity = $capacity;
     }
 
@@ -67,6 +72,14 @@ final class Merkle implements ArrayAccess, Countable, IteratorAggregate, MerkleI
     public function count()
     {
         return null === $this->items ? 0 : count($this->items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCapacity(): int
+    {
+        return $this->capacity;
     }
 
     /**
@@ -98,7 +111,7 @@ final class Merkle implements ArrayAccess, Countable, IteratorAggregate, MerkleI
         }
 
         if (null === $this->items) {
-            throw new RuntimeException('Merkle tree is empty, unable to get the hash().');
+            throw new RuntimeException('Merkle tree is empty, unable to get the hash.');
         }
 
         $items = $this->items;
@@ -109,27 +122,21 @@ final class Merkle implements ArrayAccess, Countable, IteratorAggregate, MerkleI
             }
         }
 
+        /** @var array $items */
         $items = array_replace(
             array_pad(
                 [],
-                (int) (max(
+                (int) max(
                     [
                         max(array_keys($items)),
                         count($items),
                         $this->capacity,
                     ]
-                )),
+                ),
                 null
             ),
             $items
         );
-
-        // Is it really needed ?
-        //\ksort($items);
-
-        if (false === is_array($items)) {
-            return null;
-        }
 
         while (1 < count($items)) {
             $items = array_map(

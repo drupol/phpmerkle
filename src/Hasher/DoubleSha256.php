@@ -7,7 +7,7 @@ namespace drupol\phpmerkle\Hasher;
 /**
  * Class DoubleSha256.
  */
-class DoubleSha256 extends Sha256
+final class DoubleSha256 implements HasherInterface
 {
     /**
      * @var \drupol\phpmerkle\Hasher\Sha256
@@ -28,5 +28,13 @@ class DoubleSha256 extends Sha256
     public function hash(string $data, bool $raw_output = true): string
     {
         return $this->sha256->hash($this->sha256->hash($data, $raw_output), $raw_output);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unpack(string $data): string
+    {
+        return $this->sha256->unpack($data);
     }
 }
