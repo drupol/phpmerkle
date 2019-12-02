@@ -122,17 +122,18 @@ final class Merkle implements ArrayAccess, Countable, IteratorAggregate, MerkleI
             }
         }
 
+        /** @var int $length */
+        $length = max(
+            max(array_keys($items)),
+            count($items),
+            $this->capacity
+        );
+
         /** @var array $items */
         $items = array_replace(
             array_pad(
                 [],
-                (int) max(
-                    [
-                        max(array_keys($items)),
-                        count($items),
-                        $this->capacity,
-                    ]
-                ),
+                $length,
                 null
             ),
             $items
