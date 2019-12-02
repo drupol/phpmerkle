@@ -36,3 +36,6 @@ jobs:
 
       - name: "Run Grumphp"
         run: ${{ matrix.php-binary }} vendor/bin/grumphp run
+
+      - name: "Scrutinizer"
+        run: wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
