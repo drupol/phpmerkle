@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace drupol\phpmerkle\tests;
+namespace drupol\phpmerkle\Hasher;
 
-use drupol\phpmerkle\Hasher\HasherInterface;
-
+/**
+ * Class DummyHasher.
+ */
 class DummyHasher implements HasherInterface
 {
     /**
@@ -13,7 +14,7 @@ class DummyHasher implements HasherInterface
      */
     public function hash(string $data, bool $raw_output = true): string
     {
-        return mb_strtoupper($data);
+        return $data;
     }
 
     /**
@@ -21,6 +22,6 @@ class DummyHasher implements HasherInterface
      */
     public function unpack(?string $data = null): string
     {
-        return $data;
+        return $data ?? '';
     }
 }

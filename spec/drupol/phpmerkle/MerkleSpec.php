@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace spec\drupol\phpmerkle;
 
 use drupol\phpmerkle\Hasher\DoubleSha256;
+use drupol\phpmerkle\Hasher\DummyHasher;
 use drupol\phpmerkle\Hasher\HasherInterface;
 use drupol\phpmerkle\Merkle;
-use drupol\phpmerkle\tests\DummyHasher;
 use Exception;
 use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
